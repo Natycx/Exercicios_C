@@ -9,4 +9,10 @@
 C:/Users/16335607751/Documents/Material Faculdade/Segundo semestre/Intro. Progr/C_parte2/main.c
 stdio.h
 -
+malloc.h
+-
+stdlib.h
+-
+string.h
+-
 

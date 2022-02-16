@@ -72,11 +72,38 @@ int desafio1153()
 // fib(0) = 0, fib(1) = 1
 // fib(n) = fib(n-1) + fib(n-2)
 
+int numero_chamadas = 0;
+
+int memoria_fib[100];
+
+
+int fib_memo(int n) {
+    printf("Calculando: %d", &n);
+    if (memoria_fib[n] != -1){
+        return memoria_fib[n];
+    }
+    if (n == 0 || n == 1){
+        memoria_fib[n] = n;
+        return n;
+    }
+    int ret =  fib_memo(n-1) + fib_memo(n-2);
+
+    memoria_fib[n] = ret;
+
+    return ret;
+
+}
+
 int fib_rec(int n) {
+    //printf("Calculando: %d", &n);
     if (n == 0 || n == 1) // (n <= 1)
         return n;
 
-    return fib_rec(n-1) + fib_rec(n-2);
+    int ret =  fib_rec(n-1) + fib_rec(n-2);
+    //printf("Respondendo: %d\n", n);
+
+    return ret;
+
 }
 
 //0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, ..., fib(20)
@@ -104,11 +131,17 @@ ull fib_loop(int n) {
 }
 
 int aula14_02() {
+
+    for(int  i = 0; i < 100; ++i){
+        memoria_fib[i] = -1;
+    }
+
     int x;
     scanf("%d", &x);
 
-    ull y = fib_loop(x);
+    ull y = fib_memo(x);
     printf("%llu\n", y);
+    printf("numero_chamadas: %d\n", numero_chamadas);
 
     return 0;
 }

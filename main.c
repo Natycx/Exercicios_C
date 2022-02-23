@@ -3,43 +3,49 @@
 #include <stdlib.h>
 #include <string.h>
 
+int cmp(const void *a, const void *b){
+    const char **x = a, **y =b;
+
+    return strcmp(*x, *y);
+}
+
+
 int desafio2381(){
+    int n, m;
+    for(;;){
+        scanf("%d %d", &n, &m);
+        if(n >=1 && n <=100 && m>=1 && m<=100){
+            break;
+        }
+    }
 
-
-    return 0;
-}
-int cmp_teste(const void *a, const void *b){
-
-    const char **x = a, **y = b;
-
-    return strcmp(*x,*y);
-}
-int aula02_02(){
-
-    int n, j;
-
-    scanf("%d%d", &n, &j);
-
-    //char nomes[n][1123];
 
     char **nomes = malloc(n * sizeof(char *));
 
-    for(int i = 0; i< n; ++i){
-        nomes[i] = malloc(212356789 * sizeof(char));
+    for(int i = 0; i < n; ++i){
+        nomes[i] = malloc(1123 * sizeof(char));
         scanf(" %[^\n]", nomes[i]);
-
     }
-    qsort(nomes, n ,sizeof(nomes[0]), cmp_teste);
 
-    printf("%s\n", nomes[j - 1]);
+    qsort(nomes, n, sizeof(nomes[0]), cmp);
+
+    printf("%s\n", nomes[m - 1]);
 
     free(nomes);
-    return 0;
 
+    return 0;
 }
 
-int desafio2370(){
 
+int desafio2250(){
+    int n;
+
+    char **nomes = malloc(n * sizeof(char ));
+
+    for (int i = 0; i < n; ++i) {
+        scanf(" %[^\n]",nomes[i]);
+
+    }
 
 
 
@@ -148,7 +154,7 @@ int aula14_02() {
 
 
 int main() {
-    aula02_02();
+    desafio2381();
 
 
     return 0;

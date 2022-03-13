@@ -36,19 +36,55 @@ int desafio2381(){
     return 0;
 }
 
+typedef struct Tetris{
+    int resultado;
+    char nome[16];
+}Tetris;
+
+int cmp_tetris(const void *a, const void *b){
+    const struct Tetris *x = a, *y = b;
+
+    if((*x).resultado > (*y).resultado){
+        return -1;
+    }
+    if((*x).resultado < (*y).resultado){
+        return 1;
+    }
+    return strcmp(x ->nome, y->nome);
+
+}
 
 int desafio2250(){
     int n;
 
-    char **nomes = malloc(n * sizeof(char ));
+    scanf("%d", &n);
+
+    struct Tetris tetris[n];
 
     for (int i = 0; i < n; ++i) {
-        scanf(" %[^\n]",nomes[i]);
-
+        int menor = 999999, maior = 0, soma = 0, jogo;
+        scanf("%s", tetris[i].nome);
+        for (int j = 0; j < 12; ++j) {
+            scanf("%d", &jogo);
+            soma+=jogo;
+            if(maior<jogo){
+                maior = jogo;
+            }
+            if(menor > jogo){
+                menor = jogo;
+            }
+        }
+        soma = soma - (maior + menor);
+        tetris[i].resultado = soma;
+    }
+    for (int i = 0; i < n; ++i) {
+        printf("%s %d\n", tetris[i].nome, tetris[i].resultado);
     }
 
-
-
+    qsort(tetris, n, sizeof(tetris[0]), cmp_tetris);
+    for (int i = 0; i < n; ++i) {
+        printf("%d %s %d\n", (i + 1),tetris[i].nome, tetris[i].resultado);
+    }
 
     return 0;
 }
@@ -152,9 +188,141 @@ int aula14_02() {
     return 0;
 }
 
+typedef struct Time{
+    int abilidade;
+    char nomes[16];
+}Time;
+
+int desafio2370(){
+    int nomes, time;
+
+    scanf("%d %d", &nomes, &time);
+
+
+    return 0;
+}
+
+#define MAX_N 200
+#define MAX_M 200
+
+int grade[MAX_N + 1][MAX_M + 1], n, m;
+
+int vizinhanca[8][2] = {
+        {-1, +0},
+        {+1, +0},
+        {+0, -1},
+        {+0, +1},
+        {-1, +1},
+        {+1, -1},
+        {+1, +1},
+        {-1, -1},
+};
+
+int pinta(int x, int y){
+    grade[x][y] = 2;
+
+    int qtd_pintados = 1;
+
+    int a,b;
+
+    for (int i = 0; i < 8; ++i) {
+        a = x + vizinhanca[i][0];
+        b = y + vizinhanca[i][1];
+
+        if((a >= 1 && a <= n && b >=1 && b<=m) && grade[a][b] == 0){
+            qtd_pintados += pinta(a, b);
+        }
+    }
+    return qtd_pintados;
+}
+
+int aula_09_03(){
+    int x,y,k,a,b;
+
+    scanf("%d%d%d%d%d", &n, &m, &x, &y, &k);
+
+    for (int i = 1; i <= n; ++i) {
+        for (int j = 1; j <= m; ++j) {
+            grade[i][j] = 0;
+        }
+    }
+
+    for (int i = 0; i < k; ++i) {
+        scanf("%d%d", &a, &b);
+
+        grade[a][b] = 1;
+    }
+
+    int total_pintados = pinta(x, y);
+
+    printf("%d\n", total_pintados);
+
+    return 0;
+}
+
+#define MAX_N2 (51234)
+
+int qtd_vizinhos[MAX_N2];
+
+int* vizinhos[MAX_N2];
+
+int pintado[MAX_N2];
+
+void pinta_2(int a){
+    pintado[a] = 1;
+
+    int b;
+
+    for (int i = 0; i < qtd_vizinhos[a]; ++i) {
+        int b = vizinhos[a][i];
+
+        if(pintado[b] == 0){
+            pinta_2(b);
+        }
+    }
+}
+
+int aula_09_03_p2(){
+    int x, y;
+
+    scanf("%d%d", &x,&y);
+
+    for (int i = 0; i < m; ++i) {
+        int a, b;
+
+        scanf("%d %d", &a, &b);
+
+        vizinhos[a] = realloc(vizinhos[a], (qtd_vizinhos[a] + 1) * sizeof(i));
+        vizinhos[a] = realloc(vizinhos[b], (qtd_vizinhos[b] + 1) * sizeof(i));
+
+        vizinhos[a][qtd_vizinhos[a]] = b;
+        vizinhos[b][qtd_vizinhos[b]] = a;
+
+        ++qtd_vizinhos[a];
+        ++qtd_vizinhos[b];
+    }
+
+    int qtd_familias = 0;
+
+    for (int i = 1; i <= n; ++i) {
+        if(!pintado[i]){
+            ++qtd_familias;
+            pinta_2(i);
+        }
+    }
+    printf("%d\n", qtd_familias);
+
+    for (int i = 0; i < n; ++i) {
+        if(vizinhos[i] != NULL){
+            free(vizinhos[i]);
+        }
+    }
+
+    return 0;
+}
 
 int main() {
-    desafio2381();
+    aula_09_03_p2();
 
 
     return 0;
